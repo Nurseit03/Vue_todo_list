@@ -6,6 +6,7 @@
     :post="post" 
     :key="post.id"
     @remove="$emit('remove', post)"
+    @edit="$emit('edit', post)"
     />
   </div>
 </template>

@@ -1,10 +1,7 @@
 <template>
   <div class="app">
     <post-form @create="createPost" />
-    <post-list 
-        :posts="posts" 
-        @remove="removePost"    
-    />
+    <post-list :posts="posts" @remove="removePost" @edit="editPost"/>
   </div>
 </template>
 
@@ -18,11 +15,7 @@ export default {
   },
   data() {
     return {
-      posts: [
-        // { id: 1, title: "Пост", body: "тело поста 1" },
-        // { id: 2, title: "Пост2", body: "тело поста 2" },
-        // { id: 3, title: "Пост3", body: "тело поста 3" },
-      ],
+      posts: JSON.parse(localStorage.getItem("posts")) || [],
       title: "",
       body: "",
     };
@@ -33,9 +26,17 @@ export default {
         return;
       }
       this.posts.push(post);
+      this.savePostsToLocalStorage();
     },
     removePost(post) {
-        this.posts = this.posts.filter(p => p.id !== post.id)
+      this.posts = this.posts.filter((p) => p.id !== post.id);
+      this.savePostsToLocalStorage();
+    },
+    savePostsToLocalStorage() {
+      localStorage.setItem("posts", JSON.stringify(this.posts));
+    },
+    editPost(post) {
+        
     }
   },
 };

@@ -4,11 +4,10 @@
       <div><strong>Название: </strong>{{ post.title }}</div>
       <div><strong>Описание: </strong>{{ post.body }}</div>
     </div>
-    <my-button
-        @click="$emit('remove', post)"
-    >
-        Удалить
-    </my-button>
+    <div style="display: flex; gap: 10px;">
+      <my-button @click="$emit('edit', post)"> Редактировать </my-button>
+      <my-button @click="$emit('remove', post)"> Удалить </my-button>
+    </div>
   </div>
 </template>
 
