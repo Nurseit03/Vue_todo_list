@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <my-dialog v-model:show="dialogVisible">
+        <post-form @create="createPost" />
+    </my-dialog>
     <post-form @create="createPost" />
     <post-list :posts="posts" @remove="removePost" @edit="editPost"/>
   </div>
@@ -16,8 +19,7 @@ export default {
   data() {
     return {
       posts: JSON.parse(localStorage.getItem("posts")) || [],
-      title: "",
-      body: "",
+      dialogVisible: false,
     };
   },
   methods: {
@@ -36,7 +38,9 @@ export default {
       localStorage.setItem("posts", JSON.stringify(this.posts));
     },
     editPost(post) {
+        this.dialogVisible = true;
         
+        this.savePostsToLocalStorage();
     }
   },
 };
