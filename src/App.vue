@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <my-dialog v-model:show="dialogVisible">
-        <post-form @create="createPost" />
+        <post-form @create="createPost" :editing="editing" @close-dialog="closeDialog"/>
     </my-dialog>
     <post-form @create="createPost" />
     <post-list :posts="posts" @remove="removePost" @edit="editPost"/>
@@ -20,6 +20,7 @@ export default {
     return {
       posts: JSON.parse(localStorage.getItem("posts")) || [],
       dialogVisible: false,
+      editing: false,
     };
   },
   methods: {
@@ -39,9 +40,12 @@ export default {
     },
     editPost(post) {
         this.dialogVisible = true;
-        
+        this.editing = true;
         this.savePostsToLocalStorage();
-    }
+    },
+    closeDialog() {
+      this.dialogVisible = false; // Close the dialog
+    },
   },
 };
 </script>

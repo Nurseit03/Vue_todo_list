@@ -1,27 +1,25 @@
 <template>
   <form @submit.prevent>
-    <h4>Создание поста</h4>
-    <my-input
-      v-model.trim="post.title"
-      type="text"
-      placeholder="Название"
-    />
-    <my-input
-      v-model.trim="post.body"
-      type="text"
-      placeholder="Описание"
-    />
-    <my-button 
-        @click="createPost"
-        style="align-self: flex-end; margin-top: 15px;"    
+    <h4>{{ editing ? "Редактирование поста" : "Создание поста" }}</h4>
+    <my-input v-model.trim="post.title" type="text" placeholder="Название" />
+    <my-input v-model.trim="post.body" type="text" placeholder="Описание" />
+    <my-button
+      @click="editing ? editPost() : createPost()"
+      style="align-self: flex-end; margin-top: 15px"
     >
-    Создать
+      {{ editing ? "Сохранить" : "Создать" }}
     </my-button>
   </form>
 </template>
 
 <script>
 export default {
+  props: {
+    editing: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       post: {
@@ -32,12 +30,27 @@ export default {
   },
   methods: {
     createPost() {
+      if (this.post.title.trim() === "" || this.post.body.trim() === "") {
+        return;
+      }
       this.post.id = Date.now();
-      this.$emit('create', this.post)
+      this.$emit("create", this.post);
       this.post = {
         title: "",
-        body: ""
+        body: "",
+      };
+    },
+    editPost() {
+      if (this.post.title.trim() === "" || this.post.body.trim() === "") {
+        return;
       }
+      this.$emit("edit", this.post);
+      this.post = {
+        title: "",
+        body: "",
+      };
+      
+      this.$emit("close-dialog");
     },
   },
 };
@@ -48,5 +61,4 @@ form {
   display: flex;
   flex-direction: column;
 }
-
 </style>
